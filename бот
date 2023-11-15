@@ -1,0 +1,57 @@
+import re
+import telebot
+
+bot = telebot.TeleBot("6986857398:AAHblRVH_Xu1pOt4rRIZanl45wbB8D2r-6k")
+
+def search_image(keyword):
+    dictionary = {'кошка': 'http://f.vividscreen.info/soft/76072d2f713664f535fc56d45b0d1c50/Curious-Kitty-2560x1600.jpg',
+                  'кошек': 'http://f.vividscreen.info/soft/76072d2f713664f535fc56d45b0d1c50/Curious-Kitty-2560x1600.jpg',
+                  'кошки': 'http://f.vividscreen.info/soft/76072d2f713664f535fc56d45b0d1c50/Curious-Kitty-2560x1600.jpg',
+                  'кошку': 'http://f.vividscreen.info/soft/76072d2f713664f535fc56d45b0d1c50/Curious-Kitty-2560x1600.jpg',
+         'собака': 'https://w.forfun.com/fetch/55/55413c98d9b7198c8a08ac25b9514594.jpeg',
+         'собаку': 'https://w.forfun.com/fetch/55/55413c98d9b7198c8a08ac25b9514594.jpeg',
+         'собак': "https://w.forfun.com/fetch/55/55413c98d9b7198c8a08ac25b9514594.jpeg",
+         'собаки': 'https://w.forfun.com/fetch/55/55413c98d9b7198c8a08ac25b9514594.jpeg',
+           'машина': 'https://w.forfun.com/fetch/5a/5a7350599720f7a5b6749672e16b099f.jpeg',
+           'машин': 'https://w.forfun.com/fetch/5a/5a7350599720f7a5b6749672e16b099f.jpeg',
+           "машины": 'https://w.forfun.com/fetch/5a/5a7350599720f7a5b6749672e16b099f.jpeg',
+            'бургер': 'https://main-cdn.sbermegamarket.ru/hlr-system/-16/017/136/771/181/559/100029622423b0.jpg',
+            'бергеры': 'https://main-cdn.sbermegamarket.ru/hlr-system/-16/017/136/771/181/559/100029622423b0.jpg',
+            'бургеров': 'https://main-cdn.sbermegamarket.ru/hlr-system/-16/017/136/771/181/559/100029622423b0.jpg',
+             'квартира': 'https://w.forfun.com/fetch/03/036571557260f71b0b6b9810157f8170.jpeg',
+             'квартир': 'https://w.forfun.com/fetch/03/036571557260f71b0b6b9810157f8170.jpeg',
+             'квартиры': 'https://w.forfun.com/fetch/03/036571557260f71b0b6b9810157f8170.jpeg',
+              'комната': 'https://avatars.mds.yandex.net/i?id=9c2e18ddad074d144d2c53642b88a3b5f7a94df4-7020937-images-thumbs&ref=rim&n=33&w=300&h=200',
+              'комнат': 'https://avatars.mds.yandex.net/i?id=9c2e18ddad074d144d2c53642b88a3b5f7a94df4-7020937-images-thumbs&ref=rim&n=33&w=300&h=200',
+              'комнаты': 'https://avatars.mds.yandex.net/i?id=9c2e18ddad074d144d2c53642b88a3b5f7a94df4-7020937-images-thumbs&ref=rim&n=33&w=300&h=200',
+               'пацаны': 'https://proprikol.ru/wp-content/uploads/2020/10/kartinki-krasivyh-muzhchin-54.jpg',
+               'пацанами': 'https://proprikol.ru/wp-content/uploads/2020/10/kartinki-krasivyh-muzhchin-54.jpg',
+               'пацана': 'https://proprikol.ru/wp-content/uploads/2020/10/kartinki-krasivyh-muzhchin-54.jpg',
+               'пацанов': 'https://proprikol.ru/wp-content/uploads/2020/10/kartinki-krasivyh-muzhchin-54.jpg',
+               'пацан': 'https://proprikol.ru/wp-content/uploads/2020/10/kartinki-krasivyh-muzhchin-54.jpg',
+                'вертолет': 'https://w-dog.ru/wallpapers/0/9/502385928027127/vertolet-spasatel-kanada-zheltyj.jpg',
+                'вертолета': 'https://w-dog.ru/wallpapers/0/9/502385928027127/vertolet-spasatel-kanada-zheltyj.jpg',
+                'вертолетов': 'https://w-dog.ru/wallpapers/0/9/502385928027127/vertolet-spasatel-kanada-zheltyj.jpg',
+                 'телефон': 'https://catherineasquithgallery.com/uploads/posts/2021-02/1614516507_121-p-telefon-na-belom-fone-129.jpg',
+                 'телефона': 'https://catherineasquithgallery.com/uploads/posts/2021-02/1614516507_121-p-telefon-na-belom-fone-129.jpg',
+                 'телефонов': 'https://catherineasquithgallery.com/uploads/posts/2021-02/1614516507_121-p-telefon-na-belom-fone-129.jpg',
+                  'кокос': 'https://klike.net/uploads/posts/2022-09/1662645559_d-53.jpg',
+                  'кокоса': 'https://klike.net/uploads/posts/2022-09/1662645559_d-53.jpg',
+                  'кокосов': 'https://klike.net/uploads/posts/2022-09/1662645559_d-53.jpg'}
+    
+
+    keyword = keyword.lower()
+    if keyword in dictionary:
+        return dictionary[keyword]
+    else:
+        return None
+
+@bot.message_handler(func=lambda message: True) #func=lambda message: True
+def reply_to_user(message):
+    keywords = re.findall(r'\w+', message.text)
+    for keyword in keywords:
+        image_url = search_image(keyword)
+        if image_url:
+            bot.reply_to(message, f"Найдено совпадение!'{keyword}': {image_url}")
+
+bot.polling()
